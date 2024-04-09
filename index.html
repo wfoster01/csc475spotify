@@ -1,1 +1,63 @@
-<h1>This is my website</h1>
+<head>
+  <title>My Website</title>
+    <script>
+        function myFunction() {
+            var artist1 = document.getElementsByName("artist1")[0].value;
+            var artist2 = document.getElementsByName("artist2")[0].value;
+            var artist3 = document.getElementsByName("artist3")[0].value;
+            var url = "http://127.0.0.1:5000/recommend?artist1=" +  encodeURIComponent(artist1) + "&artist2=" + 
+                                                                    encodeURIComponent(artist2) + "&artist3=" + 
+                                                                    encodeURIComponent(artist3);
+            
+            console.log(url);
+            // make ajax request
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function() {
+                console.log(xhr.readyState);
+                console.log(xhr.status);
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log(xhr.responseText);
+                    var response = JSON.parse(xhr.responseText);
+                    
+                    var div = document.getElementById("recommendations");
+                    var content = "<h2>Recommendations:</h2>";
+                    console.log(response);
+
+                    var keys = Object.keys(response);
+
+                    for (var i = 0; i < keys.length; i++) {
+                        var key = keys[i];
+                        content += "" + response[key] + "<br/>";
+                    }
+
+                    div.innerHTML = content;
+                }
+            }
+
+            xhr.send();
+
+        }
+    </script>
+</head>
+<body>
+
+
+
+<center>
+<h1> 🎶 🎷 🎵 Breaking the Spotify Loop  🔁 🥁🎙️</h1>
+<img src="https://hypebot.typepad.com/.a/6a00d83451b36c69e201b7c9098bc1970b-200wi" width="5%">
+<h2>Enter 3 artists you like:</h2>
+<!-- <form action="myFunction()" method="get"> -->
+  <input type="text" name="artist1" placeholder="Artist 1"><br/><br/>
+  <input type="text" name="artist2" placeholder="Artist 2"><br/><br/>
+  <input type="text" name="artist3" placeholder="Artist 3"><br/><br/>
+  <button onclick="myFunction()">Recommend</button>
+
+  <div id="recommendations">
+  </div>
+  
+<!-- </form> -->
+</center>
+
+</body>
